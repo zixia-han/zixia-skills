@@ -1,1 +1,65 @@
-m«ëˆ§½©buªàºg§·üâÆ&›k8¿½éİ¢¿åºv«§+a¢ŞŠmr«ü¸®bç©ÉKæÚ±î¸Ø[é¢Šwâ•ê(º×â•æÛ­æ¤n·š‘éÜ¡×¢ëiºÛ©Š{h–)Ş²‡åzx-†{¦×^r‡^uç(uè§¦ëa…éiv+)•¬­†+&zËè¢›­Šznµø¥y×Ÿjém~ŠìµØ§¢‹­¦ëhºÚnµø¥y×Ÿjém~ŠìµÚ.
+# -*- coding: utf-8 -*-
+
+from ..util import LunarUtil
+
+
+class LiuYue:
+    """
+    æµæœˆ
+    """
+
+    def __init__(self, liu_nian, index):
+        self.__liuNian = liu_nian
+        self.__index = index
+
+    def getIndex(self):
+        return self.__index
+
+    def getMonthInChinese(self):
+        """
+        è·å–ä¸­æ–‡çš„æœˆ
+        :return: ä¸­æ–‡æœˆï¼Œå¦‚æ­£
+        """
+        return LunarUtil.MONTH[self.__index + 1]
+
+    def getGanZhi(self):
+        """
+        è·å–å¹²æ”¯
+        <p>
+        ã€Šäº”è™éã€‹
+        ç”²å·±ä¹‹å¹´ä¸™ä½œé¦–ï¼Œ
+        ä¹™åºšä¹‹å¹´æˆŠä¸ºå¤´ï¼Œ
+        ä¸™è¾›ä¹‹å¹´å¯»åºšä¸Šï¼Œ
+        ä¸å£¬å£¬å¯…é¡ºæ°´æµï¼Œ
+        è‹¥é—®æˆŠç™¸ä½•å¤„èµ°ï¼Œ
+        ç”²å¯…ä¹‹ä¸Šå¥½è¿½æ±‚ã€‚
+        :return: å¹²æ”¯
+        """
+        offset = 0
+        year_gan_zhi = self.__liuNian.getGanZhi()
+        year_gan = year_gan_zhi[:1]
+        if "ç”²" == year_gan or "å·±" == year_gan:
+            offset = 2
+        elif "ä¹™" == year_gan or "åºš" == year_gan:
+            offset = 4
+        elif "ä¸™" == year_gan or "è¾›" == year_gan:
+            offset = 6
+        elif "ä¸" == year_gan or "å£¬" == year_gan:
+            offset = 8
+        gan = LunarUtil.GAN[(self.__index + offset) % 10 + 1]
+        zhi = LunarUtil.ZHI[(self.__index + LunarUtil.BASE_MONTH_ZHI_INDEX) % 12 + 1]
+        return gan + zhi
+
+    def getXun(self):
+        """
+        è·å–æ‰€åœ¨æ—¬
+        :return: æ—¬
+        """
+        return LunarUtil.getXun(self.getGanZhi())
+
+    def getXunKong(self):
+        """
+        è·å–æ—¬ç©º(ç©ºäº¡)
+        :return: æ—¬ç©º(ç©ºäº¡)
+        """
+        return LunarUtil.getXunKong(self.getGanZhi())

@@ -1,1 +1,39 @@
-m«ëˆ§½©buªàºg§·üâÆ&›k8¿½éİ¢¿åºv«§+a¢Å¢ÚzËb½©iÉKæÚ±î¸Ø[é¢Šwâ•ê(º×â•æÛ­æ¤n·š‘éÜ¡×¢ëiºÛ©Š{h–)Ş²‡åzx-†{¦×^r‡^uç(uè§¦ëa…éiv+)•¬­†+&zËè¢›­Šznµø¥y×Ÿjém~ŠìµØ§¢‹­¦ëhºÚnµø¥y×Ÿjém~ŠìµÚ.
+# -*- coding: utf-8 -*-
+
+
+class FotoFestival:
+    """
+    ä½›å†å› æœçŠ¯å¿Œ
+    """
+
+    def __init__(self, name, result=None, every_month=False, remark=None):
+        self.__name = name
+        self.__result = "" if result is None else result
+        self.__everyMonth = every_month
+        self.__remark = "" if remark is None else remark
+
+    def getName(self):
+        return self.__name
+
+    def getResult(self):
+        return self.__result
+
+    def isEveryMonth(self):
+        return self.__everyMonth
+
+    def getRemark(self):
+        return self.__remark
+
+    def __str__(self):
+        return self.toString()
+
+    def toString(self):
+        return self.__name
+
+    def toFullString(self):
+        s = self.__name
+        if self.__result is not None and len(self.__result) > 0:
+            s += " " + self.__result
+        if self.__remark is not None and len(self.__remark) > 0:
+            s += " " + self.__remark
+        return s

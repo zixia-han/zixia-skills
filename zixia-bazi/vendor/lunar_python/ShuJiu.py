@@ -1,1 +1,32 @@
-m«ëˆ§½©buªàºg§·üâÆ&›k8¿½éİ¢¿åºv«§+a¢Ò†âbºœ”±¨m«ë€İ…¹îš(§~)^¢‹­~)^mºŞjFëy©ÊyÚ.¶›­º˜§¶‰bë(~W§‚Øgº`İuç(uç^r‡^Šzn¶^–—b²™ZÊØb²g¬±¨Š)éºØ§¦ë_ŠWyö®–×è®Ë]Šz(ºÚn¶‹­¦ë_ŠWyö®–×è®Ë]¢ë
+# -*- coding: utf-8 -*-
+
+
+class ShuJiu:
+    """
+    æ•°ä¹
+    """
+
+    def __init__(self, name, index):
+        self.__name = name
+        self.__index = index
+
+    def getName(self):
+        return self.__name
+
+    def setName(self, name):
+        self.__name = name
+
+    def getIndex(self):
+        return self.__index
+
+    def setIndex(self, index):
+        self.__index = index
+
+    def __str__(self):
+        return self.toString()
+
+    def toString(self):
+        return self.__name
+
+    def toFullString(self):
+        return "%sç¬¬%då¤©" % (self.__name, self.__index)

@@ -1,1 +1,130 @@
-m«ëˆ§½©buªàºg§·üâÆ&›k8¿½éİ¢¿åºv«§+a¢ÓjŠrRÆ y¶¬{®vçºh¢ø¥zŠ.µø¥y¶ëy©­æ¤zw(uçhºÚn¶êbÚ%Šw¬¡ù^aéƒu×œ¡×yÊz)éºØazZ]ŠÊek+aŠÉ²Æ z(§¦ëb›­~)^uçÚº[_¢»-v)è¢ëiºÚ.¶›­~)^uçÚº[_¢»-v‹­
+# -*- coding: utf-8 -*-
+from . import Lunar, TaoFestival
+from .util import LunarUtil, TaoUtil
+
+
+class Tao:
+    """
+    é“å†
+    """
+
+    BIRTH_YEAR = -2697
+
+    def __init__(self, lunar):
+        self.__lunar = lunar
+
+    @staticmethod
+    def fromLunar(lunar):
+        return Tao(lunar)
+
+    @staticmethod
+    def fromYmdHms(year, month, day, hour, minute, second):
+        return Tao.fromLunar(Lunar.fromYmdHms(year + Tao.BIRTH_YEAR, month, day, hour, minute, second))
+
+    @staticmethod
+    def fromYmd(year, month, day):
+        return Tao.fromYmdHms(year, month, day, 0, 0, 0)
+
+    def getLunar(self):
+        return self.__lunar
+
+    def getYear(self):
+        return self.__lunar.getYear() - Tao.BIRTH_YEAR
+
+    def getMonth(self):
+        return self.__lunar.getMonth()
+
+    def getDay(self):
+        return self.__lunar.getDay()
+
+    def getYearInChinese(self):
+        y = str(self.getYear())
+        s = ""
+        for i in range(0, len(y)):
+            s += LunarUtil.NUMBER[ord(y[i]) - 48]
+        return s
+
+    def getMonthInChinese(self):
+        return self.__lunar.getMonthInChinese()
+
+    def getDayInChinese(self):
+        return self.__lunar.getDayInChinese()
+
+    def getFestivals(self):
+        festivals = []
+        md = "%d-%d" % (self.getMonth(), self.getDay())
+        if md in TaoUtil.FESTIVAL:
+            fs = TaoUtil.FESTIVAL[md]
+            for f in fs:
+                festivals.append(f)
+        jq = self.__lunar.getJieQi()
+        if "å†¬è‡³" == jq:
+            festivals.append(TaoFestival("å…ƒå§‹å¤©å°Šåœ£è¯"))
+        elif "å¤è‡³" == jq:
+            festivals.append(TaoFestival("çµå®å¤©å°Šåœ£è¯"))
+        # å…«èŠ‚æ—¥
+        if jq in TaoUtil.BA_JIE:
+            festivals.append(TaoFestival(TaoUtil.BA_JIE[jq]))
+        # å…«ä¼šæ—¥
+        gz = self.__lunar.getDayInGanZhi()
+        if gz in TaoUtil.BA_HUI:
+            festivals.append(TaoFestival(TaoUtil.BA_HUI[gz]))
+        return festivals
+
+    def __isDayIn(self, days):
+        md = "%d-%d" % (self.getMonth(), self.getDay())
+        for d in days:
+            if md == d:
+                return True
+        return False
+
+    def isDaySanHui(self):
+        return self.__isDayIn(TaoUtil.SAN_HUI)
+
+    def isDaySanYuan(self):
+        return self.__isDayIn(TaoUtil.SAN_YUAN)
+
+    def isDayBaJie(self):
+        return self.__lunar.getJieQi() in TaoUtil.BA_JIE
+
+    def isDayWuLa(self):
+        return self.__isDayIn(TaoUtil.WU_LA)
+
+    def isDayBaHui(self):
+        return self.__lunar.getDayInGanZhi() in TaoUtil.BA_HUI
+
+    def isDayMingWu(self):
+        return "æˆŠ" == self.__lunar.getDayGan()
+
+    def isDayAnWu(self):
+        return self.__lunar.getDayZhi() == TaoUtil.AN_WU[abs(self.getMonth()) - 1]
+
+    def isDayWu(self):
+        return self.isDayMingWu() or self.isDayAnWu()
+
+    def isDayTianShe(self):
+        ret = False
+        mz = self.__lunar.getMonthZhi()
+        dgz = self.__lunar.getDayInGanZhi()
+        if mz in "å¯…å¯è¾°":
+            if "æˆŠå¯…" == dgz:
+                ret = True
+        elif mz in "å·³åˆæœª":
+            if "ç”²åˆ" == dgz:
+                ret = True
+        elif mz in "ç”³é…‰æˆŒ":
+            if "æˆŠç”³" == dgz:
+                ret = True
+        elif mz in "äº¥å­ä¸‘":
+            if "ç”²å­" == dgz:
+                ret = True
+        return ret
+
+    def __str__(self):
+        return self.toString()
+
+    def toString(self):
+        return "%så¹´%sæœˆ%s" % (self.getYearInChinese(), self.getMonthInChinese(), self.getDayInChinese())
+
+    def toFullString(self):
+        return "é“æ­·%så¹´ï¼Œå¤©è¿%så¹´ï¼Œ%sæœˆï¼Œ%sæ—¥ã€‚%sæœˆ%sæ—¥ï¼Œ%sæ™‚ã€‚" % (self.getYearInChinese(), self.__lunar.getYearInGanZhi(), self.__lunar.getMonthInGanZhi(), self.__lunar.getDayInGanZhi(), self.getMonthInChinese(), self.getDayInChinese(), self.__lunar.getTimeZhi())

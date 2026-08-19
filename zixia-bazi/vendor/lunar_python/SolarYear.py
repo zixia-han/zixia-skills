@@ -1,1 +1,54 @@
-m«ëˆ§½©buªàºg§·üâÆ&›k8¿½éİ¢¿åºv«§+a¢Ò¢V«aæ«§%,j›jÇºà7an{¦Š)ßŠW¨¢ë_ŠW›n·š‘ºŞjG§r‡^v‹­¦ën¦)í¢X§zÊ•éà¶î˜7]yÊy×œ¡×¢›­†¥¥Ø¬¦V²¶¬™ë,j¢Šzn¶)éº×â•ç^}«¥µú+²×bŠ.¶›­¢ëiº×â•ç^}«¥µú+²×hº
+# -*- coding: utf-8 -*-
+
+from . import SolarMonth
+
+
+class SolarYear:
+    """
+    é˜³å†å¹´
+    """
+
+    MONTH_COUNT = 12
+
+    def __init__(self, year):
+        self.__year = year
+
+    @staticmethod
+    def fromDate(date):
+        return SolarYear(date.year)
+
+    @staticmethod
+    def fromYear(year):
+        return SolarYear(year)
+
+    def getYear(self):
+        return self.__year
+
+    def toString(self):
+        return str(self.__year)
+
+    def toFullString(self):
+        return "%då¹´" % self.__year
+
+    def __str__(self):
+        return self.toString()
+
+    def getMonths(self):
+        """
+        è·å–æœ¬å¹´çš„é˜³å†æœˆåˆ—è¡¨
+        :return: é˜³å†æœˆåˆ—è¡¨
+        """
+        months = []
+        m = SolarMonth.fromYm(self.__year, 1)
+        months.append(m)
+        for i in range(1, SolarYear.MONTH_COUNT):
+            months.append(m.next(i))
+        return months
+
+    def next(self, years):
+        """
+        è·å–å¾€åæ¨å‡ å¹´çš„é˜³å†å¹´ï¼Œå¦‚æœè¦å¾€å‰æ¨ï¼Œåˆ™æœˆæ•°ç”¨è´Ÿæ•°
+        :param years: å¹´æ•°
+        :return: é˜³å†å¹´
+        """
+        return SolarYear.fromYear(self.__year + years)

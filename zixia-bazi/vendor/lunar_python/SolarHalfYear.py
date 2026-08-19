@@ -1,1 +1,66 @@
-m«ëˆ§½©buªàºg§·üâÆ&›k8¿½éİ¢¿åºv«§+a¢Ò¢V«©_aæ«§%,j›jÇºà7an{¦Š)ßŠW¨¢ë_ŠW›n·š‘ºŞjG§r‡^v‹­¦ën¦)í¢X§zÊ•éà¶î˜7]yÊy×œ¡×¢›­†¥¥Ø¬¦V²¶¬™ë,j¢Šzn¶)éº×â•ç^}«¥µú+²×bŠ.¶›­¢ëiº×â•ç^}«¥µú+²×hº
+# -*- coding: utf-8 -*-
+from math import ceil
+
+from . import SolarMonth
+
+
+class SolarHalfYear:
+    """
+    é˜³å†åŠå¹´
+    """
+
+    MONTH_COUNT = 6
+
+    def __init__(self, year, month):
+        self.__year = year
+        self.__month = month
+
+    @staticmethod
+    def fromDate(date):
+        return SolarHalfYear(date.year, date.month)
+
+    @staticmethod
+    def fromYm(year, month):
+        return SolarHalfYear(year, month)
+
+    def getYear(self):
+        return self.__year
+
+    def getMonth(self):
+        return self.__month
+
+    def toString(self):
+        return "%d.%d" % (self.__year, self.getIndex())
+
+    def toFullString(self):
+        return "%då¹´%såŠå¹´" % (self.__year, ("ä¸Š" if 1 == self.getIndex() else "ä¸‹"))
+
+    def __str__(self):
+        return self.toString()
+
+    def getIndex(self):
+        """
+        è·å–å½“æœˆæ˜¯ç¬¬å‡ åŠå¹´
+        :return: åŠå¹´åºå·ï¼Œä»1å¼€å§‹
+        """
+        return int(ceil(self.__month * 1.0 / SolarHalfYear.MONTH_COUNT))
+
+    def getMonths(self):
+        """
+        è·å–æœ¬åŠå¹´çš„é˜³å†æœˆåˆ—è¡¨
+        :return: é˜³å†æœˆåˆ—è¡¨
+        """
+        months = []
+        index = self.getIndex() - 1
+        for i in range(0, SolarHalfYear.MONTH_COUNT):
+            months.append(SolarMonth.fromYm(self.__year, SolarHalfYear.MONTH_COUNT * index + i + 1))
+        return months
+
+    def next(self, half_years):
+        """
+        åŠå¹´æ¨ç§»
+        :param half_years: æ¨ç§»çš„åŠå¹´æ•°ï¼Œè´Ÿæ•°ä¸ºå€’æ¨
+        :return: æ¨ç§»åçš„åŠå¹´
+        """
+        m = SolarMonth.fromYm(self.__year, self.__month).next(SolarHalfYear.MONTH_COUNT * half_years)
+        return SolarHalfYear.fromYm(m.getYear(), m.getMonth())

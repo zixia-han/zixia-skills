@@ -1,1 +1,29 @@
-m«ëˆ§½©buªàºg§·üâÆ&›k8¿½éİ¢¿åºv«§+a¢Ój^²Ø¯jZrRÆ y¶¬{®vçºh¢ø¥zŠ.µø¥y¶ëy©­æ¤zw(uçhºÚn¶êbÚ%Šw¬¡ù^aéƒu×œ¡×yÊz)éºØazZ]ŠÊek+aŠÉ²Æ z(§¦ëb›­~)^uçÚº[_¢»-v)è¢ëiºÚ.¶›­~)^uçÚº[_¢»-v‹­
+# -*- coding: utf-8 -*-
+
+
+class TaoFestival:
+    """
+    é“å†èŠ‚æ—¥
+    """
+
+    def __init__(self, name, remark=None):
+        self.__name = name
+        self.__remark = "" if remark is None else remark
+
+    def getName(self):
+        return self.__name
+
+    def getRemark(self):
+        return self.__remark
+
+    def __str__(self):
+        return self.toString()
+
+    def toString(self):
+        return self.__name
+
+    def toFullString(self):
+        s = self.__name
+        if self.__remark is not None and len(self.__remark) > 0:
+            s += "[" + self.__remark + "]"
+        return s

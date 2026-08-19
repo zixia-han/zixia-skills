@@ -1,1 +1,55 @@
-m«ëˆ§½©buªàºg§·üâÆ&›k8¿½éÝ¢¿åºv«§+a¢ÞŠmr«ýxš¡‹§§%,j›jÇºà7an{¦Š)ßŠW¨¢ë_ŠW›n·š‘ºÞjG§r‡^v‹­¦ën¦)í¢X§zÊ•éà¶î˜7]yÊy×œ¡×¢ž›­†¥¥Ø¬¦V²¶¬™ë,j¢Šzn¶)éº×â•ç^}«¥µú+²×bžŠ.¶›­¢ëiº×â•ç^}«¥µú+²×hº
+# -*- coding: utf-8 -*-
+from ..util import LunarUtil
+
+
+class XiaoYun:
+    """
+    å°è¿
+    """
+
+    def __init__(self, da_yun, index, forward):
+        self.__daYun = da_yun
+        self.__lunar = da_yun.getLunar()
+        self.__index = index
+        self.__year = da_yun.getStartYear() + index
+        self.__age = da_yun.getStartAge() + index
+        self.__forward = forward
+
+    def getIndex(self):
+        return self.__index
+
+    def getYear(self):
+        return self.__year
+
+    def getAge(self):
+        return self.__age
+
+    def getGanZhi(self):
+        """
+        èŽ·å–å¹²æ”¯
+        :return: å¹²æ”¯
+        """
+        offset = LunarUtil.getJiaZiIndex(self.__lunar.getTimeInGanZhi())
+        add = self.__index + 1
+        if self.__daYun.getIndex() > 0:
+            add += self.__daYun.getStartAge() - 1
+        offset += add if self.__forward else -add
+        size = len(LunarUtil.JIA_ZI)
+        while offset < 0:
+            offset += size
+        offset %= size
+        return LunarUtil.JIA_ZI[offset]
+
+    def getXun(self):
+        """
+        èŽ·å–æ‰€åœ¨æ—¬
+        :return: æ—¬
+        """
+        return LunarUtil.getXun(self.getGanZhi())
+
+    def getXunKong(self):
+        """
+        èŽ·å–æ—¬ç©º(ç©ºäº¡)
+        :return: æ—¬ç©º(ç©ºäº¡)
+        """
+        return LunarUtil.getXunKong(self.getGanZhi())

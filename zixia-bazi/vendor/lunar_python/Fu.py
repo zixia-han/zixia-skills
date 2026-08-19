@@ -1,1 +1,33 @@
-m«ëˆ§½©buªàºg§·üâÆ&›k8¿½éİ¢¿åºv«§+a¢Åºœ”±¨m«ë€İ…¹îš(§~)^¢‹­~)^mºŞjFëy©ÊyÚ.¶›­º˜§¶‰bë(~W§‚Øgº`İuç(uç^r‡^Šzn¶^–—b²™ZÊØb²g¬±¨Š)éºØ§¦ë_ŠWyö®–×è®Ë]Šz(ºÚn¶‹­¦ë_ŠWyö®–×è®Ë]¢ë
+# -*- coding: utf-8 -*-
+
+
+class Fu:
+    """
+    ä¸‰ä¼
+    <p>ä»å¤è‡³åç¬¬3ä¸ªåºšæ—¥ç®—èµ·ï¼Œåˆä¼ä¸º10å¤©ï¼Œä¸­ä¼ä¸º10å¤©æˆ–20å¤©ï¼Œæœ«ä¼ä¸º10å¤©ã€‚å½“å¤è‡³ä¸ç«‹ç§‹ä¹‹é—´å‡ºç°4ä¸ªåºšæ—¥æ—¶ä¸­ä¼ä¸º10å¤©ï¼Œå‡ºç°5ä¸ªåºšæ—¥åˆ™ä¸º20å¤©ã€‚</p>
+    """
+
+    def __init__(self, name, index):
+        self.__name = name
+        self.__index = index
+
+    def getName(self):
+        return self.__name
+
+    def setName(self, name):
+        self.__name = name
+
+    def getIndex(self):
+        return self.__index
+
+    def setIndex(self, index):
+        self.__index = index
+
+    def __str__(self):
+        return self.toString()
+
+    def toString(self):
+        return self.__name
+
+    def toFullString(self):
+        return "%sç¬¬%då¤©" % (self.__name, self.__index)

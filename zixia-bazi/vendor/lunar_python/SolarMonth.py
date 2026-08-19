@@ -1,1 +1,85 @@
-m«ëˆ§½©buªàºg§·üâÆ&›k8¿½éİ¢¿åºv«§+a¢Ò¢V«2‰í†œ”±¨m«ë€İ…¹îš(§~)^¢‹­~)^mºŞjFëy©ÊyÚ.¶›­º˜§¶‰bë(~W§‚Øgº`İuç(uç^r‡^Šzn¶^–—b²™ZÊØb²g¬±¨Š)éºØ§¦ë_ŠWyö®–×è®Ë]Šz(ºÚn¶‹­¦ë_ŠWyö®–×è®Ë]¢ë
+# -*- coding: utf-8 -*-
+
+from . import Solar, SolarWeek
+from .util import SolarUtil
+
+
+class SolarMonth:
+    """
+    é˜³å†æœˆ
+    """
+
+    def __init__(self, year, month):
+        self.__year = year
+        self.__month = month
+
+    @staticmethod
+    def fromDate(date):
+        return SolarMonth(date.year, date.month)
+
+    @staticmethod
+    def fromYm(year: int, month: int):
+        return SolarMonth(year, month)
+
+    def getYear(self):
+        return self.__year
+
+    def getMonth(self):
+        return self.__month
+
+    def toString(self):
+        return "%d-%d" % (self.__year, self.__month)
+
+    def toFullString(self):
+        return "%då¹´%dæœˆ" % (self.__year, self.__month)
+
+    def __str__(self):
+        return self.toString()
+
+    def getDays(self):
+        """
+        è·å–æœ¬æœˆçš„é˜³å†æ—¥æœŸåˆ—è¡¨
+        :return: é˜³å†æ—¥æœŸåˆ—è¡¨
+        """
+        days = []
+        d = Solar.fromYmd(self.__year, self.__month, 1)
+        days.append(d)
+        for i in range(1, SolarUtil.getDaysOfMonth(self.__year, self.__month)):
+            days.append(d.next(i))
+        return days
+
+    def getWeeks(self, start):
+        """
+        è·å–æœ¬æœˆçš„é˜³å†æ—¥æœŸåˆ—è¡¨
+        :param start: æ˜ŸæœŸå‡ ä½œä¸ºä¸€å‘¨çš„å¼€å§‹ï¼Œ1234560åˆ†åˆ«ä»£è¡¨æ˜ŸæœŸä¸€è‡³æ˜ŸæœŸå¤©
+        :return: é˜³å†æ—¥æœŸåˆ—è¡¨
+        """
+        weeks = []
+        week = SolarWeek.fromYmd(self.__year, self.__month, 1, start)
+        while True:
+            weeks.append(week)
+            week = week.next(1, False)
+            first_day = week.getFirstDay()
+            if first_day.getYear() > self.__year or first_day.getMonth() > self.__month:
+                break
+        return weeks
+
+    def next(self, months):
+        """
+        è·å–å¾€åæ¨å‡ ä¸ªæœˆçš„é˜³å†æœˆï¼Œå¦‚æœè¦å¾€å‰æ¨ï¼Œåˆ™æœˆæ•°ç”¨è´Ÿæ•°
+        :param months: æœˆæ•°
+        :return: é˜³å†æœˆ
+        """
+        n = 1
+        if months < 0:
+            n = -1
+        m = abs(months)
+        y = self.__year + int(m / 12) * n
+        m = self.__month + m % 12 * n
+        if m > 12:
+            m -= 12
+            y += 1
+        elif m < 1:
+            m += 12
+            y -= 1
+        return SolarMonth.fromYm(y, m)

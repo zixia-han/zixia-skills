@@ -1,1 +1,70 @@
-m«ëˆ§½©buªàºg§·üâÆ&›k8¿½éİ¢¿åºv«§+a¢É‰ä"§%,j›jÇºà7an{¦Š)ßŠW¨¢ë_ŠW›n·š‘ºŞjG§r‡^v‹­¦ën¦)í¢X§zÊ•éà¶î˜7]yÊy×œ¡×¢›­†¥¥Ø¬¦V²¶¬™ë,j¢Šzn¶)éº×â•ç^}«¥µú+²×bŠ.¶›­¢ëiº×â•ç^}«¥µú+²×hº
+# -*- coding: utf-8 -*-
+
+
+class JieQi:
+    """
+    èŠ‚æ°”
+    """
+
+    def __init__(self, name, solar):
+        self.__name = name
+        self.__jie = False
+        self.__qi = False
+        self.__solar = solar
+        self.setName(name)
+
+    def getName(self):
+        """
+        è·å–åç§°
+        :return: åç§°
+        """
+        return self.__name
+
+    def setName(self, name):
+        """
+        è®¾ç½®åç§°
+        :param name: åç§°
+        """
+        from . import Lunar
+        self.__name = name
+        for i in range(0, len(Lunar.JIE_QI)):
+            if name == Lunar.JIE_QI[i]:
+                if i % 2 == 0:
+                    self.__qi = True
+                else:
+                    self.__jie = True
+                return
+
+    def getSolar(self):
+        """
+        è·å–é˜³å†æ—¥æœŸ
+        :return: é˜³å†æ—¥æœŸ
+        """
+        return self.__solar
+
+    def setSolar(self, solar):
+        """
+        è®¾ç½®é˜³å†æ—¥æœŸ
+        :param solar: é˜³å†æ—¥æœŸ
+        """
+        self.__solar = solar
+
+    def isJie(self):
+        """
+        æ˜¯å¦èŠ‚ä»¤
+        :return: true/false
+        """
+        return self.__jie
+
+    def isQi(self):
+        """
+        æ˜¯å¦æ°”ä»¤
+        :return: true/false
+        """
+        return self.__qi
+
+    def toString(self):
+        return self.__name
+
+    def __str__(self):
+        return self.toString()

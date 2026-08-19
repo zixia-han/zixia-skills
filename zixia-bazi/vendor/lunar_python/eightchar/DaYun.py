@@ -1,1 +1,101 @@
-m«ëˆ§½©buªàºg§·üâÆ&›k8¿½éİ¢¿åºv«§+a¢ŞŠmr«ü6˜ºzrRÆ y¶¬{®vçºh¢ø¥zŠ.µø¥y¶ëy©­æ¤zw(uçhºÚn¶êbÚ%Šw¬¡ù^aéƒu×œ¡×yÊz)éºØazZ]ŠÊek+aŠÉ²Æ z(§¦ëb›­~)^uçÚº[_¢»-v)è¢ëiºÚ.¶›­~)^uçÚº[_¢»-v‹­
+# -*- coding: utf-8 -*-
+from . import XiaoYun, LiuNian
+from ..util import LunarUtil
+
+
+class DaYun:
+    """
+    å¤§è¿
+    """
+
+    def __init__(self, yun, index: int):
+        self.__yun = yun
+        self.__lunar = yun.getLunar()
+        self.__index = index
+        birth_year = yun.getLunar().getSolar().getYear()
+        year = yun.getStartSolar().getYear()
+        if index < 1:
+            self.__startYear = birth_year
+            self.__startAge = 1
+            self.__endYear = year - 1
+            self.__endAge = year - birth_year
+        else:
+            add = (index - 1) * 10
+            self.__startYear = year + add
+            self.__startAge = self.__startYear - birth_year + 1
+            self.__endYear = self.__startYear + 9
+            self.__endAge = self.__startAge + 9
+
+    def getStartYear(self):
+        return self.__startYear
+
+    def getEndYear(self):
+        return self.__endYear
+
+    def getStartAge(self):
+        return self.__startAge
+
+    def getEndAge(self):
+        return self.__endAge
+
+    def getIndex(self):
+        return self.__index
+
+    def getLunar(self):
+        return self.__lunar
+
+    def getGanZhi(self):
+        """
+        è·å–å¹²æ”¯
+        :return: å¹²æ”¯
+        """
+        if self.__index < 1:
+            return ""
+        offset = LunarUtil.getJiaZiIndex(self.__lunar.getMonthInGanZhiExact())
+        offset += self.__index if self.__yun.isForward() else -self.__index
+        size = len(LunarUtil.JIA_ZI)
+        if offset >= size:
+            offset -= size
+        if offset < 0:
+            offset += size
+        return LunarUtil.JIA_ZI[offset]
+
+    def getXun(self):
+        """
+        è·å–æ‰€åœ¨æ—¬
+        :return: æ—¬
+        """
+        return LunarUtil.getXun(self.getGanZhi())
+
+    def getXunKong(self):
+        """
+        è·å–æ—¬ç©º(ç©ºäº¡)
+        :return: æ—¬ç©º(ç©ºäº¡)
+        """
+        return LunarUtil.getXunKong(self.getGanZhi())
+
+    def getLiuNian(self, n=10):
+        """
+        è·å–æµå¹´
+        :param n: è½®æ•°
+        :return: æµå¹´
+        """
+        if self.__index < 1:
+            n = self.__endYear - self.__startYear + 1
+        liu_nian = []
+        for i in range(0, n):
+            liu_nian.append(LiuNian(self, i))
+        return liu_nian
+
+    def getXiaoYun(self, n=10):
+        """
+        è·å–å°è¿
+        :param n: è½®æ•°
+        :return: å°è¿
+        """
+        if self.__index < 1:
+            n = self.__endYear - self.__startYear + 1
+        xiao_yun = []
+        for i in range(0, n):
+            xiao_yun.append(XiaoYun(self, i, self.__yun.isForward()))
+        return xiao_yun
