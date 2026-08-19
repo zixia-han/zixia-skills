@@ -8,11 +8,11 @@
 
 ### 安装
 
-将下面命令中的 `你的GitHub用户名` 替换为仓库所有者用户名：
+复制下面的命令即可安装：
 
 ```bash
 python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
-  --repo 你的GitHub用户名/zixia-skills \
+  --repo zixia-han/zixia-skills \
   --path zixia-bazi
 ```
 
